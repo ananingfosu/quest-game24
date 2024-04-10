@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Question Game</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #container {
+        text-align: center;
+      }
+
+      #questionBox {
+        width: 300px;
+        height: 150px;
+        background-color: #fff;
+        border: 2px solid #3498db;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        font-size: 18px;
+        line-height: 1.5;
+      }
+
+      button,
+      select {
+        background-color: #3498db;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 5px;
+      }
+
+      button:hover,
+      select:hover {
+        background-color: #2980b9;
+      }
+
+      select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23ffffff' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position-x: 95%;
+        background-position-y: center;
+        padding-right: 25px;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <select id="themeSelect">
+        <option value="starters">Starters</option>
+        <option value="deep">Deep</option>
+        <option value="spicy">Spicy</option>
+        <!-- Add more themes here -->
+      </select>
+      <div id="questionBox"></div>
+      <button onclick="startGame()">Start Game</button>
+    </div>
+
+    <footer>The Question Game made with ❤️ by [Nana Kwame]</footer>
+
+    <script>
+      // Object containing questions for each theme
+      var themes = {
+        starters: [
+          "What's the most interesting place you've ever visited?",
+          "If you could have any superpower, what would it be and why?",
+          "What's the last book you read or movie you watched that you loved?",
+          "Do you have any pets? If so, tell me about them!",
+          "What's a skill or hobby you've always wanted to learn but haven't yet?",
+          "If you could live in any time period, past or future, when would it be?",
+          "What's your favorite thing to do on a lazy Sunday?",
+          "Can you share a memorable travel experience you've had?",
+          "What's the best piece of advice you've ever received?",
+          "If you could instantly master any instrument, which one would you choose?",
+          "What's a goal you're currently working towards?",
+          "What's your go-to comfort food?",
+          "Do you prefer the beach or the mountains for a vacation?",
+          "If you could switch lives with anyone for a day, who would it be?",
+          "What's your favorite way to unwind after a long day?",
+          "What's a talent or skill you're proud of?",
+          "What's something that always makes you laugh?",
+          "If you could have dinner with any fictional character, who would it be?",
+          "Can you share a memorable childhood memory?",
+          "What's your favorite type of cuisine?",
+          "If you could travel back in time and give your younger self advice, what would it be?",
+          "What's your favorite holiday and why?",
+          "What's a cause or charity you're passionate about?",
+          "What's your dream vacation destination?",
+          "If you could only listen to one genre of music for the rest of your life, what would it be?",
+          "What's your favorite thing about your hometown?",
+          "Can you share a funny or embarrassing moment from your past?",
+          "What's a movie or TV show you can watch over and over again?",
+          "What's your favorite season and why?",
+          "If you could visit any fictional world, where would you go?",
+          "What's your favorite board game or card game?",
+          "What's something you're grateful for today?",
+          "What's the best concert you've ever been to?",
+          "What's your favorite quote and what does it mean to you?",
+          "If you could meet any historical figure, who would it be and why?",
+          "What's a hobby or activity you enjoy in your free time?",
+          "What's your favorite memory with your friends or family?",
+          "If you could have any job in the world for one week, what would it be?",
+          "What's a skill you wish you were better at?",
+          "What's your favorite thing to do outdoors?",
+          "If you could only eat one food for the rest of your life, what would it be?",
+          "What's your favorite way to spend a Friday night?",
+          "Can you share a meaningful lesson you've learned in life?",
+          "What's something on your bucket list that you haven't done yet?",
+          "If you could travel to any country, where would you go?",
+          "What's your favorite thing about yourself?",
+          "What's the most interesting fact you know?",
+          "Can you share a memorable moment from your school or university days?",
+          "What's your favorite way to show someone you care about them?",
+          "If you could relive one day of your life, which day would it be and why?",
+          // Add more friend-themed questions here
+        ],
+        deep: [
+          "What is the meaning of life to you?",
+          "How do you envision your ideal future?",
+          "What is one thing you regret from your past, and how has it influenced you?",
+          "What does success look like to you, both personally and professionally?",
+          "How do you define happiness, and what do you think it takes to achieve it?",
+          "What legacy do you want to leave behind?",
+          "If you could change one decision from your past, what would it be and why?",
+          "What motivates you to keep moving forward, even during challenging times?",
+          "How do you cope with uncertainty about the future?",
+          "What role do you think fate or destiny plays in shaping our lives?",
+          "What do you believe happens after death?",
+          "How do you prioritize your goals and aspirations in life?",
+          "What lessons have you learned from your past experiences?",
+          "How do you overcome obstacles and setbacks?",
+          "What are you most grateful for in your life right now?",
+          "What do you think is the purpose of suffering?",
+          "How do you find meaning in difficult or mundane tasks?",
+          "What do you want to accomplish before the end of your life?",
+          "What are your biggest fears, and how do you confront them?",
+          "How do you balance living in the present with planning for the future?",
+          "What do you think is the biggest challenge facing humanity today?",
+          "What advice would you give to your younger self?",
+          "How do you stay grounded and connected to the present moment?",
+          "What is your greatest strength, and how does it define you?",
+          "What do you think is the key to living a fulfilling life?",
+          "How do you navigate the complexities of relationships and connections with others?",
+          "What do you think is the purpose of art and creativity in our lives?",
+          "How do you find inspiration and motivation when you're feeling stuck?",
+          "What do you hope to achieve in the next year, and how do you plan to get there?",
+          "What role do you think spirituality or faith plays in shaping our existence?",
+          "How do you define success in terms of personal growth and development?",
+          "What do you think is the significance of human existence in the grand scheme of the universe?",
+          "How do you deal with feelings of nostalgia or longing for the past?",
+          "What do you think is the most important lesson life has taught you so far?",
+          "How do you approach making decisions that will impact your future?",
+          "What do you think is the value of self-reflection and introspection?",
+          "How do you handle moments of doubt and uncertainty about your path in life?",
+          "What do you believe is the connection between happiness and fulfillment?",
+          "How do you define your identity and sense of self?",
+          "What do you think is the significance of dreams and aspirations in our lives?",
+          "How do you find purpose and meaning in your daily activities?",
+          "What do you think is the role of education in shaping our perspectives and values?",
+          "How do you stay present and mindful in a world filled with distractions?",
+          "What do you believe is the importance of leaving a mark on the world?",
+          "How do you reconcile the past with the present and future?",
+          "What do you think is the impact of technology on our lives and society?",
+          "How do you cultivate resilience and adaptability in the face of change?",
+          "What do you think is the secret to a long and fulfilling life?",
+          "How do you approach finding balance in all aspects of your life?",
+          "What do you think is the ultimate goal of human existence?",
+          // Add more crush-themed questions here
+        ],
+        spicy: [
+          "What is the key to a successful relationship?",
+          "What is the most romantic thing your partner has done for you?",
+          "Working on the questions so play the other ones",
+          // Add more relationship-themed questions here
+        ],
+        // Add more themes here
+      };
+
+      function startGame() {
+        var selectedTheme = document.getElementById("themeSelect").value;
+        var questionBox = document.getElementById("questionBox");
+        var randomIndex = Math.floor(
+          Math.random() * themes[selectedTheme].length
+        );
+        questionBox.innerText = themes[selectedTheme][randomIndex];
+      }
+    </script>
+  </body>
+</html>
